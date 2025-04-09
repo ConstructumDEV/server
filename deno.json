@@ -1,0 +1,8 @@
+{
+  "tasks": {
+    "start": "deno run --allow-read --allow-env --allow-net src/index.ts"
+  },
+  "imports": {
+    "express": "npm:express@^5.1.0"
+  }
+}
