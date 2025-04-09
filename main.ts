@@ -5,18 +5,21 @@ const wss = new WebSocketServer({ port: 8000 });
 const port = 8443; //https
 const app = express();
 import api from "./api.ts";
+let d = "n"
 
 wss.on('connection', function connection(ws) {
   ws.on('error', console.error);
   ws.on('message', function message(data) {
     console.log('received: %s', data);
+    d = data
+
     console.log("conn: ", wss.clients.size);
     // Broadcast to all clients
     wss.clients.forEach(client => {
       if (client.readyState === WebSocket.OPEN) {
         console.log("clientreadystate")
         try {
-          client.send(data);
+          client.send(d);
           console.log("packet.sendout");
         } catch (error) {
           console.error("error.packet: ", error);
