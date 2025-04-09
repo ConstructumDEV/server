@@ -11,19 +11,24 @@ wss.on('connection', function connection(ws) {
   ws.on('error', console.error);
   ws.on('message', function message(data) {
     console.log('received: %s', data);
-    d = data
+    d = data.toString();
 
     console.log("conn: ", wss.clients.size);
     // Broadcast to all clients
     wss.clients.forEach(client => {
       if (client.readyState === WebSocket.OPEN) {
+        if (client != ws) {
         console.log("clientreadystate")
         try {
+          console.log(d);
           client.send(d);
           console.log("packet.sendout");
         } catch (error) {
           console.error("error.packet: ", error);
         }
+    } else {
+      console.log("prevented duplicate!");
+    }
     }
     });
   });
