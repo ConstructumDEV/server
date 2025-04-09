@@ -6,7 +6,8 @@
     "npm:@types/express@4.17.15": "4.17.15",
     "npm:@types/node@*": "22.5.4",
     "npm:express@*": "4.21.1",
-    "npm:express@^5.1.0": "5.1.0"
+    "npm:express@^5.1.0": "5.1.0",
+    "npm:ws@*": "8.18.1"
   },
   "jsr": {
     "@std/fs@1.0.6": {
@@ -723,6 +724,9 @@
     },
     "wrappy@1.0.2": {
       "integrity": "sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ=="
+    },
+    "ws@8.18.1": {
+      "integrity": "sha512-RKW2aJZMXeMxVpnZ6bck+RswznaxmzdULiBr6KY7XkTnW8uvt0iT9H5DkHUChXrc+uurzwa0rVI16n/Xzjdz1w=="
     }
   },
   "workspace": {
