@@ -1,38 +1,40 @@
 // @deno-types="npm:@types/express@4.17.15"
 import express from "npm:express";
-
+import { WebSocketServer } from "npm:ws";
+const wss = new WebSocketServer({ port: 8000 });
 const port = 8443; //https
 const app = express();
 import api from "./api.ts";
+
+wss.on('connection', function connection(ws) {
+  ws.on('error', console.error);
+  ws.on('message', function message(data) {
+    console.log('received: %s', data);
+    console.log("conn: ", wss.clients.size);
+    // Broadcast to all clients
+    wss.clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN) {
+        console.log("clientreadystate")
+        try {
+          client.send(data);
+          console.log("packet.sendout");
+        } catch (error) {
+          console.error("error.packet: ", error);
+        }
+    }
+    });
+  });
+
+  ws.send('something');
+});
 
 app.use("/api", api);
 app.get("/", (_req, res) => {
   res.send("not set up");
   // res.sendFile(`../pages/landing.html`);
 });
+//let oldwsglobal = "none"
 
-Deno.serve((req) => {
-  if (req.headers.get("upgrade") != "websocket") {
-    return new Response(null, { status: 405 }); // method not allowed!
-  }
-  const { socket, response } = Deno.upgradeWebSocket(req);
-  socket.addEventListener("open", () => {
-    console.log("a client connected!");
-  });
-
-  socket.addEventListener("close", () => {
-    console.log("a client disconnected!");
-  });
-
-  socket.addEventListener("message", (event) => {
-    if (event.data === "ping") {
-      socket.send("pong");
-    } else {
-      socket.send("try 'pong'")
-    }
-  });
-  return response;
-});
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
