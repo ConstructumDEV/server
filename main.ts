@@ -1,7 +1,7 @@
 // @deno-types="npm:@types/express@4.17.15"
 import express from "npm:express";
 
-const port = 8080; //https
+const port = 8443; //https
 const app = express();
 import api from "./api.ts";
 
@@ -13,15 +13,22 @@ app.get("/", (_req, res) => {
 
 Deno.serve((req) => {
   if (req.headers.get("upgrade") != "websocket") {
-    return new Response(null, { status: 501 });
+    return new Response(null, { status: 405 }); // method not allowed!
   }
   const { socket, response } = Deno.upgradeWebSocket(req);
   socket.addEventListener("open", () => {
     console.log("a client connected!");
   });
+
+  socket.addEventListener("close", () => {
+    console.log("a client disconnected!");
+  });
+
   socket.addEventListener("message", (event) => {
     if (event.data === "ping") {
       socket.send("pong");
+    } else {
+      socket.send("try 'pong'")
     }
   });
   return response;

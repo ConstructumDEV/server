@@ -16,22 +16,6 @@ const _loadIfExists = async (name: string, contents: string) => {
 if (!fs.existsSync("data")) Deno.mkdirSync("data");
 // const logindata: UserCreds[] = JSON.parse(await loadIfExists("data/login.json", "[]"));
 
-router.get("/time", (_req, res) => {
-  console.log(Date.now()); // testing
-  // req.body;
-  let final = "error"
-  final = Date.now().toString();
-  res.send(final);
-});
-
-router.get("/uptime", (_req, res) => {
-  console.log(Date.now()); // testing
-  // req.body;
-  let final = 0
-  final = Date.now() - old;
-  res.send(final.toString());
-});
-
 router.get("/", (_req, res) => {
   res.send("Invalid api service.");
 });
