@@ -4,12 +4,14 @@ import { WebSocketServer } from "npm:ws";
 const app = express();
 import api from "./api.ts";
 import fs from "node:fs";
+import path from "node:path";
+import os from "node:os";
 import https from "node:https";
 
 let d = "n"
 const server = https.createServer({
-  cert: fs.readFileSync("/Desktop/reed/=key/cert.pem"),
-  key: fs.readFileSync("/Desktop/reed/=key/key.pem"),
+  cert: fs.readFileSync(path.resolve(os.homedir(), "Desktop", "=key", "cert.pem")),
+  key: fs.readFileSync(path.resolve(os.homedir(), "Desktop", "=key", "key.pem")),
 });
 
 const wss = new WebSocketServer({ server });
