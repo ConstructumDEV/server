@@ -10,13 +10,13 @@ import https from "node:https";
 
 let d = "n"
 const combcert = fs.readFileSync(path.resolve(os.homedir(), "Desktop", "=key", "certcf.pem"));
-const wserver = https.createServer({
+const server = https.createServer({
   cert: combcert,
   key: combcert,
 })
-wserver.listen(3030, () => console.log('SECServer running on port 8000'));
+server.listen(8000, () => console.log('SECServer running on port 8000'));
 
-const wss = new WebSocketServer({ wserver });
+const wss = new WebSocketServer({ server });
 
 wss.on('connection', function connection(ws) {
   console.log("it tried?");
