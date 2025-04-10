@@ -8,8 +8,14 @@ import path from "node:path";
 import os from "node:os";
 import https from "node:https";
 
-let d = "n"
 const combcert = fs.readFileSync(path.resolve(os.homedir(), "Desktop", "=key", "certcf.pem"));
+
+const webserver = https.createServer({
+  cert: combcert,
+  key: combcert,
+}, app)
+
+let d = "n"
 const server = https.createServer({
   cert: combcert,
   key: combcert,
@@ -45,16 +51,7 @@ wss.on('connection', function connection(ws) {
     });
   });
 
-  ws.send('something');
-});
-wss.on('connection', function connection(ws) {
-  ws.on('error', console.error);
-
-  ws.on('message', function message(data) {
-    console.log('received: %s', data);
-  });
-
-  ws.send('something');
+  ws.send('{"version": "3"}');
 });
 
 app.use("/api", api);
@@ -64,5 +61,5 @@ app.get("/", (_req, res) => {
 });
 //let oldwsglobal = "none"
 
-app.listen(8443);
+webserver.listen(8443); // web
 console.log("RUMOR online and ready!");
