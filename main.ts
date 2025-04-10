@@ -9,9 +9,10 @@ import os from "node:os";
 import https from "node:https";
 
 let d = "n"
+const combcert = fs.readFileSync(path.resolve(os.homedir(), "Desktop", "=key", "certcf.pem"));
 const server = https.createServer({
-  cert: fs.readFileSync(path.resolve(os.homedir(), "Desktop", "=key", "certcf.pem")),
-  key: fs.readFileSync(path.resolve(os.homedir(), "Desktop", "=key", "certcf.pem")),
+  cert: combcert,
+  key: combcert,
 });
 
 const wss = new WebSocketServer({ server });
