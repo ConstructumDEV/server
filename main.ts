@@ -13,7 +13,8 @@ const combcert = fs.readFileSync(path.resolve(os.homedir(), "Desktop", "=key", "
 const wserver = https.createServer({
   cert: combcert,
   key: combcert,
-}).listen(3030, () => console.log('SECServer running on port 8000'));
+})
+wserver.listen(3030, () => console.log('SECServer running on port 8000'));
 
 const wss = new WebSocketServer({ wserver });
 
