@@ -1,25 +1,17 @@
 // @deno-types="npm:@types/express@4.17.15"
 import express from "npm:express";
 import { WebSocketServer } from "npm:ws";
-const port = 8443; //https
 const app = express();
 import api from "./api.ts";
-import https from "node:https";
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
-import { homedir } from "node:os";
+import http from "node:http";
 
-const certPath = resolve(homedir(), "Desktop/=key/cert.pem");
-const keyPath = resolve(homedir(), "Desktop/=key/key.pem");
 let d = "n"
-const options = {
-  key: readFileSync(keyPath),
-  cert: readFileSync(certPath),
-}
-const server = https.createServer(options, (req, res) => {
-  res.writeHead(200);
-  res.end('hello world\n');
-}).listen(8000); 
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({
+    data: 'Hello  Constructum!',
+  }));
+});
 
 const wss = new WebSocketServer({ server });
 
@@ -69,6 +61,6 @@ app.get("/", (_req, res) => {
 });
 //let oldwsglobal = "none"
 
-https.createServer(options, app).listen(443, () => {
-  console.log("Secure Express server running on port 443");
-});
+app.listen(8443);
+server.listen(8000);
+console.log("RUMOR online and ready!");
