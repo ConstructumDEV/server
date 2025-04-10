@@ -4,7 +4,7 @@ import { WebSocketServer } from "npm:ws";
 const port = 8443; //https
 const app = express();
 import api from "./api.ts";
-import { createServer } from "node:https";
+import https from "node:https";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { homedir } from "node:os";
@@ -12,14 +12,19 @@ import { homedir } from "node:os";
 const certPath = resolve(homedir(), "Desktop/=key/cert.pem");
 const keyPath = resolve(homedir(), "Desktop/=key/key.pem");
 let d = "n"
-
-const server = createServer({
-  cert: readFileSync(certPath),
+const options = {
   key: readFileSync(keyPath),
-});
+  cert: readFileSync(certPath),
+}
+const server = https.createServer(options, (req, res) => {
+  res.writeHead(200);
+  res.end('hello world\n');
+}).listen(8000); 
+
 const wss = new WebSocketServer({ server });
 
 wss.on('connection', function connection(ws) {
+  console.log("it tried?");
   ws.on('error', console.error);
   ws.on('message', function message(data) {
     console.log('received: %s', data);
@@ -47,6 +52,15 @@ wss.on('connection', function connection(ws) {
 
   ws.send('something');
 });
+wss.on('connection', function connection(ws) {
+  ws.on('error', console.error);
+
+  ws.on('message', function message(data) {
+    console.log('received: %s', data);
+  });
+
+  ws.send('something');
+});
 
 app.use("/api", api);
 app.get("/", (_req, res) => {
@@ -55,9 +69,6 @@ app.get("/", (_req, res) => {
 });
 //let oldwsglobal = "none"
 
-server.listen(8000, () => {
-  console.log("Secure WebSocket server running on wss://localhost:8000");
+https.createServer(options, app).listen(443, () => {
+  console.log("Secure Express server running on port 443");
 });
-app.listen(port, () => {
-  console.log(`Server is running on port: ${port}`);
-}); 
