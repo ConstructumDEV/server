@@ -3,14 +3,13 @@ import express from "npm:express";
 import { WebSocketServer } from "npm:ws";
 const app = express();
 import api from "./api.ts";
-import http from "node:http";
+import fs from "node:fs";
+import https from "node:https";
 
 let d = "n"
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify({
-    data: 'Hello  Constructum!',
-  }));
+const server = https.createServer({
+  cert: fs.readFileSync("/Desktop/reed/=key/cert.pem"),
+  key: fs.readFileSync("/Desktop/reed/=key/key.pem"),
 });
 
 const wss = new WebSocketServer({ server });
@@ -62,5 +61,5 @@ app.get("/", (_req, res) => {
 //let oldwsglobal = "none"
 
 app.listen(8443);
-server.listen(8000);
+server.listen(8000, () => console.log('SECServer running on port 8000'));
 console.log("RUMOR online and ready!");
