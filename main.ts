@@ -10,12 +10,12 @@ import https from "node:https";
 
 let d = "n"
 const combcert = fs.readFileSync(path.resolve(os.homedir(), "Desktop", "=key", "certcf.pem"));
-const server = https.createServer({
+const wserver = https.createServer({
   cert: combcert,
   key: combcert,
-});
+}).listen(3030, () => console.log('SECServer running on port 8000'));
 
-const wss = new WebSocketServer({ server });
+const wss = new WebSocketServer({ wserver });
 
 wss.on('connection', function connection(ws) {
   console.log("it tried?");
@@ -64,5 +64,4 @@ app.get("/", (_req, res) => {
 //let oldwsglobal = "none"
 
 app.listen(8443);
-server.listen(3030, () => console.log('SECServer running on port 8000'));
 console.log("RUMOR online and ready!");
