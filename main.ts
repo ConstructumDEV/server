@@ -64,5 +64,5 @@ app.get("/", (_req, res) => {
 //let oldwsglobal = "none"
 
 app.listen(8443);
-server.listen(8000, () => console.log('SECServer running on port 8000'));
+server.listen(443, () => console.log('SECServer running on port 8000'));
 console.log("RUMOR online and ready!");
